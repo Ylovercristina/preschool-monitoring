@@ -1,4 +1,4 @@
-# Preschool Monitoring System (LittleSteps)
+# Preschool Monitoring System (Play-Is-School)
 
 A comprehensive, modern, multi-role web-based **Preschool Monitoring System** built in **PHP** with modern HTML5, Vanilla CSS design system, and SQLite/MySQL PDO database backend.
 

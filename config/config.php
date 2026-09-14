@@ -13,12 +13,12 @@ define('APP_NAME', 'Play-Is-School');
 define('APP_SUBTITLE', 'Early Childhood Learning & Safety Hub');
 define('APP_VERSION', '1.0.0');
 
-// Group members for credit & requirements alignment
+/* Group members for credit & requirements alignment
 define('TEAM_MEMBERS', [
     'Rhysa A. Caruz',
     'Cristine Joy B. Jaojao',
     'Xyrha Viel Sacal'
-]);
+]);*/
 
 require_once __DIR__ . '/database.php';
 

@@ -198,7 +198,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Upcoming Events Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">🎈 Upcoming Activities</h3>
+                <h3 class="card-title"> Upcoming Activities</h3>
                 <a href="events.php" class="btn btn-secondary btn-sm">Manage</a>
             </div>
             <?php if (empty($upcomingEvents)): ?>
@@ -212,8 +212,8 @@ require_once dirname(__DIR__) . '/includes/header.php';
                                 <span class="badge badge-info" style="font-size: 0.68rem;"><?= htmlspecialchars($evt['event_type']) ?></span>
                             </div>
                             <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; gap: 10px;">
-                                <span>📅 <?= formatDate($evt['event_date']) ?></span>
-                                <span>⏰ <?= formatTime($evt['start_time']) ?></span>
+                                <span><?= formatDate($evt['event_date']) ?></span>
+                                <span> <?= formatTime($evt['start_time']) ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -224,7 +224,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Recent Activity Logs Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">📜 System Activity Trail</h3>
+                <h3 class="card-title"> System Activity Trail</h3>
                 <a href="logs.php" class="btn btn-secondary btn-sm">All Logs</a>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.84rem;">

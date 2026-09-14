@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
     $phone = trim($_POST['phone'] ?? '');
+    $role = trim($_POST['role'] ?? 'parent');
 
     if (empty($name) || empty($email) || empty($password) || empty($phone)) {
         $error = 'All fields are required. Please complete the form.';
@@ -29,9 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Password must be at least 6 characters long.';
     } elseif ($password !== $confirmPassword) {
         $error = 'Passwords do not match.';
+    } elseif (!in_array($role, ['parent', 'teacher'])) {
+        $error = 'Invalid role selection.';
     } else {
-        // Public registration is intentionally limited to parent accounts.
-        $role = 'parent';
+        // Allow registration for both parent and teacher accounts
+        $role = $role;
         $db = getDB();
         $stmt = $db->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
         $stmt->execute([$email]);
@@ -47,12 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $admin = $db->query("SELECT id FROM users WHERE role = 'admin' LIMIT 1")->fetch();
             if ($admin) {
+                $roleLabel = ucfirst($role);
                 $notifStmt = $db->prepare("INSERT INTO notifications (user_id, title, message, type, link) VALUES (?, ?, ?, 'system', 'admin/approvals.php')");
-                $notifStmt->execute([$admin['id'], 'New Parent Account Approval Needed', "{$name} registered as a parent and is waiting for approval."]);
+                $notifStmt->execute([$admin['id'], "New {$roleLabel} Account Approval Needed", "{$name} registered as a {$role} and is waiting for approval."]);
             }
 
-            logActivity('Parent Signup Submitted', "Parent {$name} submitted registration (pending approval)", $newUserId);
-            setFlash('info', "Registration submitted successfully! Your account is pending Admin approval. You will be able to log in once approved by the preschool.");
+            $roleLabel = ucfirst($role);
+            logActivity($roleLabel . ' Signup Submitted', "{$roleLabel} {$name} submitted registration (pending approval)", $newUserId);
+            setFlash('info', "Registration submitted successfully! Your {$role} account is pending Admin approval. You will be able to log in once approved by the preschool.");
 
             header("Location: login.php");
             exit;
@@ -108,9 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="csrf_token" value="<?= csrfToken() ?>">
 
             <div class="form-group">
-                <label class="form-label">Account Type</label>
-                <div class="form-control" style="background: var(--bg-card-subtle);">Parent / Legal Guardian</div>
-                <small style="color: var(--text-muted); font-size: 0.76rem;">Parent accounts undergo verification before full activation. Teachers are added by the school administrator.</small>
+                <label class="form-label" for="role">Account Type</label>
+                <select name="role" id="role" class="form-control" required>
+                    <option value="parent">Parent / Legal Guardian</option>
+                    <option value="teacher">Teacher / Staff Member</option>
+                </select>
+                <small style="color: var(--text-muted); font-size: 0.76rem;">Both parent and teacher accounts require verification before full activation.</small>
             </div>
 
             <div class="form-group">

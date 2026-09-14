@@ -15,10 +15,10 @@ $activeEmergency = getActiveEmergencyAlert();
 
 <aside class="app-sidebar" id="appSidebar">
     <div class="sidebar-brand">
-        <div class="brand-icon">🎒</div>
+        <div class="brand-icon">�</div>
         <div>
-            <div class="brand-title"><?= APP_NAME ?></div>
-            <div class="brand-subtitle">School Portal</div>
+            <div class="brand-title">Play is School</div>
+            <div class="brand-subtitle">Learning Portal</div>
         </div>
     </div>
 

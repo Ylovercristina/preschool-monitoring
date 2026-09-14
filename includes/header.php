@@ -43,7 +43,7 @@ $pageSubtitle = $pageSubtitle ?? APP_SUBTITLE;
             <div class="topbar-right">
                 <!-- Role Badge -->
                 <span class="role-pill <?= htmlspecialchars($role) ?>">
-                    <?= strtoupper(htmlspecialchars($role)) ?> PORTAL
+                    <?= strtoupper(htmlspecialchars($role)) ?>
                 </span>
 
                 <!-- User Profile Pill -->
@@ -52,7 +52,7 @@ $pageSubtitle = $pageSubtitle ?? APP_SUBTITLE;
                         <?= strtoupper(substr($user['name'] ?? 'U', 0, 1)) ?>
                     </div>
                     <div style="line-height: 1.1;">
-                        <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">
+                        <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary);">
                             <?= htmlspecialchars($user['name'] ?? 'User') ?>
                         </div>
                         <div style="font-size: 0.72rem; color: var(--text-muted);">

@@ -23,12 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'create' || $action === 'update') {
         $name = trim($_POST['name'] ?? '');
         $email = trim($_POST['email'] ?? '');
-        $role = $_POST['role'] ?? 'parent';
+        $role = $_POST['role'] ?? 'teacher';
         $phone = trim($_POST['phone'] ?? '');
         $status = $_POST['status'] ?? 'active';
 
         if (empty($name) || empty($email)) {
             setFlash('danger', 'Name and email are required fields.');
+        } elseif (!in_array($role, ['admin', 'teacher', 'parent'], true)) {
+            setFlash('danger', 'Please choose a valid user role.');
+        } elseif (!in_array($status, ['active', 'pending_approval', 'archived'], true)) {
+            setFlash('danger', 'Please choose a valid account status.');
         } else {
             if ($action === 'create') {
                 $password = !empty($_POST['password']) ? $_POST['password'] : 'preschool123';
@@ -47,6 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             } else {
                 $id = (int)$_POST['id'];
+                if ($id === (int)$_SESSION['user_id']) {
+                    $role = 'admin';
+                    $status = 'active';
+                }
                 if (!empty($_POST['password'])) {
                     $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
                     $stmt = $db->prepare("UPDATE users SET name=?, email=?, role=?, phone=?, status=?, password=? WHERE id=?");
@@ -220,9 +228,9 @@ require_once dirname(__DIR__) . '/includes/header.php';
                     <div class="form-group">
                         <label class="form-label" for="role">User Role *</label>
                         <select name="role" id="role" class="form-select">
-                            <option value="parent">Parent</option>
                             <option value="teacher">Teacher</option>
                             <option value="admin">Administrator</option>
+                            <option value="parent">Parent</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -262,7 +270,7 @@ function openUserModal() {
     document.getElementById('userId').value = '';
     document.getElementById('name').value = '';
     document.getElementById('email').value = '';
-    document.getElementById('role').value = 'parent';
+    document.getElementById('role').value = 'teacher';
     document.getElementById('status').value = 'active';
     document.getElementById('phone').value = '';
     document.getElementById('password').value = '';

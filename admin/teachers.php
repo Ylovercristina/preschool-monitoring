@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = trim($_POST['name'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $phone = trim($_POST['phone'] ?? '');
+        $subject = trim($_POST['subject'] ?? '');
         $classroomId = !empty($_POST['classroom_id']) ? (int)$_POST['classroom_id'] : null;
 
         if (empty($name) || empty($email)) {
@@ -30,8 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($action === 'create') {
                 $password = $_POST['password'] ?? 'teacher123';
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $db->prepare("INSERT INTO users (name, email, password, role, phone, status, created_at) VALUES (?, ?, ?, 'teacher', ?, 'active', datetime('now'))");
-                $stmt->execute([$name, $email, $hash, $phone]);
+                $check = $db->prepare("SELECT id FROM users WHERE email = ?");
+                $check->execute([$email]);
+                if ($check->fetch()) {
+                    setFlash('danger', 'A user with that email already exists.');
+                    header('Location: teachers.php');
+                    exit;
+                }
+                $stmt = $db->prepare("INSERT INTO users (name, email, password, role, phone, subject, status, created_at) VALUES (?, ?, ?, 'teacher', ?, ?, 'active', datetime('now'))");
+                $stmt->execute([$name, $email, $hash, $phone, $subject]);
                 $teacherId = $db->lastInsertId();
 
                 if ($classroomId) {
@@ -43,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 setFlash('success', "Teacher record created successfully!");
             } else {
                 $id = (int)$_POST['id'];
-                $stmt = $db->prepare("UPDATE users SET name=?, email=?, phone=? WHERE id=? AND role='teacher'");
-                $stmt->execute([$name, $email, $phone, $id]);
+                $stmt = $db->prepare("UPDATE users SET name=?, email=?, phone=?, subject=? WHERE id=? AND role='teacher'");
+                $stmt->execute([$name, $email, $phone, $subject, $id]);
 
                 // Reset classroom teacher
                 $db->prepare("UPDATE classrooms SET teacher_id = NULL WHERE teacher_id = ?")->execute([$id]);
@@ -107,6 +115,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 <tr>
                     <th>Teacher Name</th>
                     <th>Email & Contact</th>
+                    <th>Subject / Role</th>
                     <th>Assigned Classroom</th>
                     <th>Enrolled Students</th>
                     <th>Status</th>
@@ -115,7 +124,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             </thead>
             <tbody>
                 <?php if (empty($teachers)): ?>
-                    <tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--text-muted);">No teacher files found.</td></tr>
+                    <tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">No teacher files found.</td></tr>
                 <?php else: ?>
                     <?php foreach ($teachers as $t): ?>
                         <tr>
@@ -134,6 +143,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                                 <strong><?= htmlspecialchars($t['email']) ?></strong><br>
                                 <small style="color: var(--text-muted);"><?= htmlspecialchars($t['phone'] ?? 'No phone listed') ?></small>
                             </td>
+                            <td><?= htmlspecialchars($t['subject'] ?? 'Teacher') ?></td>
                             <td>
                                 <?php if ($t['class_name']): ?>
                                     <span class="badge badge-info"><?= htmlspecialchars($t['class_name']) ?></span><br>
@@ -208,6 +218,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label" for="teacher_subject">Subject / Teaching Role</label>
+                    <input type="text" name="subject" id="teacher_subject" class="form-control" placeholder="e.g. Early Years Lead">
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="teacher_classroom">Assigned Classroom</label>
                     <select name="classroom_id" id="teacher_classroom" class="form-select">
                         <option value="">-- No Assigned Classroom --</option>
@@ -234,6 +249,7 @@ function openTeacherModal() {
     document.getElementById('teacher_name').value = '';
     document.getElementById('teacher_email').value = '';
     document.getElementById('teacher_phone').value = '';
+    document.getElementById('teacher_subject').value = '';
     document.getElementById('teacher_classroom').value = '';
     document.getElementById('passwordGroup').style.display = 'block';
     openModal('teacherModal');
@@ -246,6 +262,7 @@ function editTeacher(t) {
     document.getElementById('teacher_name').value = t.name;
     document.getElementById('teacher_email').value = t.email;
     document.getElementById('teacher_phone').value = t.phone || '';
+    document.getElementById('teacher_subject').value = t.subject || '';
     document.getElementById('teacher_classroom').value = t.class_id || '';
     document.getElementById('passwordGroup').style.display = 'none';
     openModal('teacherModal');

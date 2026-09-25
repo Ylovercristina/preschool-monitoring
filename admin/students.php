@@ -34,9 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $medicalNotes = trim($_POST['medical_notes'] ?? '');
         $admissionDate = $_POST['admission_date'] ?? date('Y-m-d');
 
+        $parentIsValid = true;
         if (empty($firstName) || empty($lastName) || empty($dob)) {
             setFlash('danger', 'First name, last name, and date of birth are required.');
-        } else {
+        } elseif ($parentId) {
+            $parentCheck = $db->prepare("SELECT id FROM users WHERE id = ? AND role = 'parent' AND status = 'active'");
+            $parentCheck->execute([$parentId]);
+            if (!$parentCheck->fetchColumn()) {
+                setFlash('danger', 'Students can only be linked to an active, approved parent account.');
+                $parentIsValid = false;
+            }
+        }
+
+        if (!empty($firstName) && !empty($lastName) && !empty($dob) && $parentIsValid) {
             if ($action === 'create') {
                 $stmt = $db->prepare("INSERT INTO students (first_name, last_name, lrn, dob, gender, blood_type, classroom_id, parent_id, address, emergency_contact_name, emergency_contact_phone, allergies, medical_notes, enrollment_status, admission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'enrolled', ?)");
                 $stmt->execute([$firstName, $lastName, $lrn, $dob, $gender, $bloodType, $classroomId, $parentId, $address, $emergencyName, $emergencyPhone, $allergies, $medicalNotes, $admissionDate]);
@@ -281,6 +291,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label" for="admission_date">Enrollment Date</label>
+                    <input type="date" name="admission_date" id="admission_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="address">Home Address</label>
                     <input type="text" name="address" id="address" class="form-control" placeholder="Street, City, Province">
                 </div>
@@ -350,6 +365,7 @@ function openStudentModal() {
     document.getElementById('gender').value = 'Male';
     document.getElementById('classroom_id').value = '';
     document.getElementById('parent_id').value = '';
+    document.getElementById('admission_date').value = '<?= date('Y-m-d') ?>';
     document.getElementById('address').value = '';
     document.getElementById('emergency_contact_name').value = '';
     document.getElementById('emergency_contact_phone').value = '';
@@ -370,6 +386,7 @@ function editStudent(s) {
     document.getElementById('gender').value = s.gender || 'Male';
     document.getElementById('classroom_id').value = s.classroom_id || '';
     document.getElementById('parent_id').value = s.parent_id || '';
+    document.getElementById('admission_date').value = s.admission_date || '';
     document.getElementById('address').value = s.address || '';
     document.getElementById('emergency_contact_name').value = s.emergency_contact_name || '';
     document.getElementById('emergency_contact_phone').value = s.emergency_contact_phone || '';

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = (int)($_POST['user_id'] ?? 0);
 
     if ($userId > 0) {
-        $stmt = $db->prepare("SELECT name, email FROM users WHERE id = ? AND role = 'parent'");
+        $stmt = $db->prepare("SELECT name, email FROM users WHERE id = ? AND role = 'parent' AND status = 'pending_approval'");
         $stmt->execute([$userId]);
         $parent = $stmt->fetch();
 
@@ -85,6 +85,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                         <th>Parent Name</th>
                         <th>Email Address</th>
                         <th>Mobile Contact</th>
+                        <th>Child Information</th>
                         <th>Registration Date</th>
                         <th>Status</th>
                         <th>Verification Actions</th>
@@ -106,6 +107,14 @@ require_once dirname(__DIR__) . '/includes/header.php';
                             </td>
                             <td><?= htmlspecialchars($p['email']) ?></td>
                             <td><?= htmlspecialchars($p['phone'] ?? 'None provided') ?></td>
+                            <td>
+                                <?php if (!empty($p['child_name'])): ?>
+                                    <?= htmlspecialchars($p['child_name']) ?><br>
+                                    <small style="color: var(--text-muted);">Birthdate: <?= formatDate($p['child_birthdate'] ?? null) ?></small>
+                                <?php else: ?>
+                                    <span style="color: var(--text-muted);">Not provided</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?= formatDate($p['created_at']) ?> (<?= date('h:i A', strtotime($p['created_at'])) ?>)</td>
                             <td><span class="badge badge-warning">PENDING APPROVAL</span></td>
                             <td>

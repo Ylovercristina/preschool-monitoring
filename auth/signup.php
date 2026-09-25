@@ -116,19 +116,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="form-label" for="role">Account Type</label>
                 <select name="role" id="role" class="form-control" required>
                     <option value="parent">Parent / Legal Guardian</option>
-                    <option value="teacher">Teacher / Staff Member</option>
                 </select>
-                <small style="color: var(--text-muted); font-size: 0.76rem;">Both parent and teacher accounts require verification before full activation.</small>
+                <small style="color: var(--text-muted); font-size: 0.76rem;">parent or guardian accounts require verification before full activation.</small>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="name">Full Name</label>
-                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Maria Clara Santos" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Juan Delacruz Jr." value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="email">Email Address</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="juan.delacruz@gmail.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">

@@ -87,7 +87,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <?php if (!$child): ?>
     <div class="card" style="text-align: center; padding: 48px;">
-        <div style="font-size: 3rem; margin-bottom: 12px;">👶</div>
+        <div style="font-size: 2.5rem; margin-bottom: 12px;"><i class="bi bi-info-circle"></i></div>
         <h3>Welcome to <?= APP_NAME ?>!</h3>
         <p style="color: var(--text-secondary); max-width: 500px; margin: 8px auto 20px;">
             Your account is active. Once the school administration links your enrolled child's file to your parent account, your child's milestones, attendance, and safety dashboard will appear here.
@@ -99,41 +99,40 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <?php else: ?>
 
     <!-- Child Welcome Hero Card -->
-    <div class="card" style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: #FFFFFF; border: none; margin-bottom: 24px;">
+    <div class="card" style="background: #F0F9FF; border: 1px solid #BFE7FF; margin-bottom: 24px;">
         <div class="d-flex justify-between align-center" style="flex-wrap: wrap; gap: 20px;">
             <div class="d-flex align-center gap-4">
-                <div style="width: 72px; height: 72px; border-radius: 50%; background: #FFFFFF; color: var(--primary); font-size: 2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg);">
+                <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--primary); color: #FFFFFF; font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; justify-content: center;">
                     <?= strtoupper(substr($child['first_name'], 0, 1)) ?>
                 </div>
                 <div>
-                    <span class="badge" style="background: rgba(255,255,255,0.25); color: #FFFFFF; margin-bottom: 6px;">
-                        MY PUPIL &bull; <?= htmlspecialchars($child['gender']) ?>
+                    <span class="badge" style="background: #E0F2FE; color: var(--primary); margin-bottom: 6px;">
+                        <i class="bi bi-person"></i> <?= htmlspecialchars($child['gender']) ?>
                     </span>
-                    <h2 style="color: #FFFFFF; font-size: 1.8rem; margin: 0;">
+                    <h2 style="color: var(--primary); font-size: 1.6rem; margin: 0;">
                         <?= htmlspecialchars($child['first_name'] . ' ' . $child['last_name']) ?>
                     </h2>
-                    <div style="opacity: 0.9; font-size: 0.9rem; margin-top: 4px;">
-                        <?= htmlspecialchars($child['class_name'] ?? 'Class') ?> (<?= htmlspecialchars($child['room_number'] ?? 'Room') ?>) &bull; 
-                        Teacher: <strong><?= htmlspecialchars($child['teacher_name'] ?? 'Assigned Faculty') ?></strong>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px;">
+                        <?= htmlspecialchars($child['class_name'] ?? 'Class') ?> (<?= htmlspecialchars($child['room_number'] ?? 'Room') ?>) • Teacher: <strong><?= htmlspecialchars($child['teacher_name'] ?? 'Assigned') ?></strong>
                     </div>
                 </div>
             </div>
 
             <!-- Today's Attendance Quick Pill -->
-            <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 14px 20px; border-radius: var(--radius-lg); text-align: center; border: 1px solid rgba(255,255,255,0.25);">
-                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.85;">Today's Attendance</div>
+            <div style="background: #FFFFFF; padding: 14px 20px; border-radius: var(--radius-lg); text-align: center; border: 1px solid #E5E7EB;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Today's Attendance</div>
                 <?php if ($todayAtt && in_array($todayAtt['status'], ['present', 'late'])): ?>
-                    <div style="font-size: 1.25rem; font-weight: 800; color: #86EFAC; margin-top: 2px;">
-                        ✓ <?= strtoupper($todayAtt['status']) ?>
+                    <div style="font-size: 1.25rem; font-weight: 800; color: var(--mint); margin-top: 2px;">
+                        <i class="bi bi-check-circle"></i> <?= strtoupper($todayAtt['status']) ?>
                     </div>
-                    <small style="font-size: 0.75rem; opacity: 0.85;">In at <?= formatTime($todayAtt['time_in']) ?></small>
+                    <small style="font-size: 0.75rem; color: var(--text-muted);">In at <?= formatTime($todayAtt['time_in']) ?></small>
                 <?php elseif ($todayAtt && $todayAtt['status'] === 'absent'): ?>
-                    <div style="font-size: 1.25rem; font-weight: 800; color: #FECDD3; margin-top: 2px;">
-                        ✕ ABSENT
+                    <div style="font-size: 1.25rem; font-weight: 800; color: var(--rose); margin-top: 2px;">
+                        <i class="bi bi-x-circle"></i> ABSENT
                     </div>
-                    <small style="font-size: 0.75rem; opacity: 0.85;">Marked absent</small>
+                    <small style="font-size: 0.75rem; color: var(--text-muted);">Marked absent</small>
                 <?php else: ?>
-                    <div style="font-size: 1.15rem; font-weight: 700; opacity: 0.9; margin-top: 2px;">
+                    <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-muted); margin-top: 2px;">
                         Pending Check-in
                     </div>
                 <?php endif; ?>
@@ -144,15 +143,15 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <!-- Quick Metric Cards -->
     <div class="stat-grid">
         <div class="stat-card">
-            <div class="stat-icon-wrapper stat-icon-sky">📅</div>
+            <i class="stat-icon-wrapper bi bi-calendar"></i>
             <div class="stat-content">
                 <div class="stat-value"><?= $attendanceRate ?>%</div>
-                <div class="stat-label">Attendance Record</div>
+                <div class="stat-label">Attendance Rate</div>
             </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon-wrapper stat-icon-mint">🏆</div>
+            <i class="stat-icon-wrapper bi bi-star-fill"></i>
             <div class="stat-content">
                 <div class="stat-value" style="color: var(--mint);"><?= $milestonesMastered ?> / <?= $milestonesTotal ?></div>
                 <div class="stat-label">Milestones Mastered</div>
@@ -160,17 +159,17 @@ require_once dirname(__DIR__) . '/includes/header.php';
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon-wrapper stat-icon-rose">💳</div>
+            <i class="stat-icon-wrapper bi bi-credit-card"></i>
             <div class="stat-content">
                 <div class="stat-value" style="color: <?= $feesBalance > 0 ? 'var(--rose)' : 'var(--mint)' ?>;">
                     <?= formatMoney($feesBalance) ?>
                 </div>
-                <div class="stat-label"><?= $feesBalance > 0 ? 'Outstanding Fee Balance' : 'All Fees Settled' ?></div>
+                <div class="stat-label"><?= $feesBalance > 0 ? 'Outstanding Balance' : 'Fees Settled' ?></div>
             </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon-wrapper stat-icon-accent">🛡️</div>
+            <i class="stat-icon-wrapper bi bi-shield"></i>
             <div class="stat-content">
                 <div class="stat-value"><?= $authorizedGuardiansCount ?></div>
                 <div class="stat-label">Authorized Pickups</div>
@@ -185,26 +184,26 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <!-- Quick Feature Actions -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">⚡ Quick Portals & Features</h3>
+                    <h3 class="card-title"><i class="bi bi-lightning-charge"></i> Quick Features</h3>
                 </div>
                 <div class="d-flex gap-3" style="flex-wrap: wrap;">
                     <a href="progress.php" class="btn btn-primary">
-                        <span>⭐</span> View Milestones & Progress
+                        <i class="bi bi-star-fill"></i> Milestones
                     </a>
-                    <a href="attendance.php" class="btn btn-secondary">
-                        <span>📅</span> Full Attendance History
+                    <a href="attendance.php" class="btn btn-primary">
+                        <i class="bi bi-calendar"></i> Attendance
                     </a>
-                    <a href="pickups.php" class="btn btn-mint">
-                        <span>🛡️</span> Manage Pickup Pass & PIN
+                    <a href="pickups.php" class="btn btn-primary">
+                        <i class="bi bi-shield"></i> Pickup PIN
                     </a>
-                    <a href="fees.php" class="btn btn-secondary">
-                        <span>💳</span> Fee Breakdown & Invoices
+                    <a href="fees.php" class="btn btn-primary">
+                        <i class="bi bi-credit-card"></i> Fees
                     </a>
-                    <a href="messages.php" class="btn btn-secondary">
-                        <span>💬</span> Chat With Teacher
+                    <a href="messages.php" class="btn btn-primary">
+                        <i class="bi bi-chat-dots"></i> Messages
                     </a>
-                    <a href="calendar.php" class="btn btn-secondary">
-                        <span>🗓️</span> School Calendar
+                    <a href="calendar.php" class="btn btn-primary">
+                        <i class="bi bi-calendar2"></i> Calendar
                     </a>
                 </div>
             </div>
@@ -213,28 +212,28 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <span>🩺</span> Safety, Allergies & Emergency Profile
+                        <i class="bi bi-heart-pulse"></i> Safety & Medical Profile
                     </h3>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <div style="background: #FFF1F2; border-left: 4px solid var(--rose); padding: 14px; border-radius: var(--radius-sm);">
-                        <strong style="color: var(--rose-dark);">⚠️ Known Allergies:</strong>
+                        <strong style="color: var(--rose-dark);"><i class="bi bi-exclamation-triangle"></i> Allergies:</strong>
                         <p style="margin: 4px 0 0; color: #881337; font-size: 0.9rem;">
                             <?= htmlspecialchars($child['allergies'] ?: 'None recorded.') ?>
                         </p>
                     </div>
 
                     <div style="background: #F0FDF4; border-left: 4px solid var(--mint); padding: 14px; border-radius: var(--radius-sm);">
-                        <strong style="color: var(--mint-dark);">📋 Special Medical Notes:</strong>
+                        <strong style="color: var(--mint-dark);"><i class="bi bi-card-text"></i> Medical Notes:</strong>
                         <p style="margin: 4px 0 0; color: #064E3B; font-size: 0.9rem;">
-                            <?= htmlspecialchars($child['medical_notes'] ?: 'No active medical notes on file.') ?>
+                            <?= htmlspecialchars($child['medical_notes'] ?: 'None on file.') ?>
                         </p>
                     </div>
                 </div>
 
-                <div style="margin-top: 14px; padding: 12px; background: var(--bg-card-subtle); border-radius: var(--radius-sm); font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="margin-top: 14px; padding: 12px; background: var(--bg-card-subtle); border-radius: var(--radius-sm); font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        Emergency Contact: <strong><?= htmlspecialchars($child['emergency_contact_name'] ?? 'None listed') ?></strong> (<?= htmlspecialchars($child['emergency_contact_phone'] ?? '') ?>)
+                        Emergency: <strong><?= htmlspecialchars($child['emergency_contact_name'] ?? 'Not listed') ?></strong> (<?= htmlspecialchars($child['emergency_contact_phone'] ?? '') ?>)
                     </div>
                     <span class="badge badge-primary">Blood Type: <?= htmlspecialchars($child['blood_type'] ?: 'N/A') ?></span>
                 </div>
@@ -247,7 +246,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <span>🔔</span> Recent Notifications
+                        <i class="bi bi-bell"></i> Notifications
                     </h3>
                     <a href="notifications.php" class="btn btn-secondary btn-sm">All &rarr;</a>
                 </div>
@@ -272,7 +271,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <span>🎈</span> School Activities
+                        <i class="bi bi-calendar-event"></i> School Activities
                     </h3>
                     <a href="calendar.php" class="btn btn-secondary btn-sm">Calendar</a>
                 </div>
@@ -281,7 +280,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                         <div style="padding: 10px; background: var(--bg-card-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
                             <strong><?= htmlspecialchars($evt['title']) ?></strong>
                             <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-                                📅 <?= formatDate($evt['event_date']) ?> &bull; ⏰ <?= formatTime($evt['start_time']) ?>
+                                <i class="bi bi-calendar"></i> <?= formatDate($evt['event_date']) ?> • <i class="bi bi-clock"></i> <?= formatTime($evt['start_time']) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

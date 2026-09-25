@@ -59,23 +59,23 @@ require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <!-- Classroom Greeting Banner -->
-<div class="card" style="background: linear-gradient(135deg, #EEF2FF 0%, #FAF5FF 100%); border-color: #C7D2FE; margin-bottom: 24px;">
+<div class="card" style="margin-bottom: 24px;">
     <div class="d-flex justify-between align-center" style="flex-wrap: wrap; gap: 16px;">
         <div>
             <span class="badge badge-primary" style="margin-bottom: 6px;">MY CLASSROOM</span>
-            <h2 style="font-size: 1.6rem; color: var(--primary); margin: 0;">
+            <h2 style="font-size: 1.4rem; color: var(--primary); margin: 0;">
                 <?= htmlspecialchars($classroom['name'] ?? 'Classroom Not Assigned') ?>
             </h2>
             <p style="color: var(--text-secondary); margin-top: 4px; font-size: 0.9rem;">
-                <?= htmlspecialchars($classroom['room_number'] ?? 'Room') ?> &bull; Room Capacity: <?= htmlspecialchars($classroom['capacity'] ?? '20') ?> &bull; Today: <strong><?= date('l, F d, Y') ?></strong>
+                <?= htmlspecialchars($classroom['room_number'] ?? 'Room') ?> • Capacity: <?= htmlspecialchars($classroom['capacity'] ?? '20') ?> • <?= date('l, F d, Y') ?>
             </p>
         </div>
         <div class="d-flex gap-2">
             <a href="attendance.php" class="btn btn-primary">
-                <span>📋</span> Daily Attendance
+                <i class="bi bi-clipboard"></i> Attendance
             </a>
             <a href="emergency.php" class="btn btn-danger">
-                <span>🚨</span> Emergency Broadcast
+                <i class="bi bi-exclamation-triangle"></i> Emergency
             </a>
         </div>
     </div>
@@ -84,28 +84,28 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <!-- Stat Grid -->
 <div class="stat-grid">
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-primary">👶</div>
+        <i class="stat-icon-wrapper bi bi-people"></i>
         <div class="stat-content">
             <div class="stat-value"><?= $enrolledStudents ?></div>
             <div class="stat-label">Enrolled in Class</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-mint">✓</div>
+        <i class="stat-icon-wrapper bi bi-check-circle"></i>
         <div class="stat-content">
             <div class="stat-value" style="color: var(--mint);"><?= $attPresent ?></div>
             <div class="stat-label">Present Today</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-accent">⏰</div>
+        <i class="stat-icon-wrapper bi bi-clock"></i>
         <div class="stat-content">
             <div class="stat-value" style="color: var(--accent-hover);"><?= $attLate ?></div>
-            <div class="stat-label">Tardy / Late</div>
+            <div class="stat-label">Late / Tardy</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-rose">✕</div>
+        <i class="stat-icon-wrapper bi bi-x-circle"></i>
         <div class="stat-content">
             <div class="stat-value" style="color: var(--rose);"><?= $attAbsent ?></div>
             <div class="stat-label">Absent Today</div>
@@ -119,7 +119,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <span>🎒</span> Today's Classroom Roster & Safety Status
+                <i class="bi bi-people"></i> Classroom Roster
             </h3>
             <a href="attendance.php" class="btn btn-secondary btn-sm">Update Attendance &rarr;</a>
         </div>
@@ -167,7 +167,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                                     <?= $s['today_time_in'] ? formatTime($s['today_time_in']) : '<span style="color:var(--text-muted);">--:--</span>' ?>
                                 </td>
                                 <td>
-                                    <span class="badge badge-info">🛡️ <?= (int)$s['pickups_count'] ?> Guardians</span>
+                                    <span class="badge badge-info"><i class="bi bi-shield"></i> <?= (int)$s['pickups_count'] ?> Guardians</span>
                                 </td>
                                 <td>
                                     <a href="pickups.php?student_id=<?= $s['id'] ?>" class="btn btn-primary btn-sm">
@@ -187,26 +187,26 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Quick Action Tools -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">⚡ Quick Classroom Actions</h3>
+                <h3 class="card-title"><i class="bi bi-lightning-charge"></i> Quick Actions</h3>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="progress.php" class="btn btn-subtle" style="justify-content: flex-start;">
-                    <span>🌟</span> Record Student Milestones
+                    <i class="bi bi-star"></i> Record Milestones
                 </a>
                 <a href="pickups.php" class="btn btn-subtle" style="justify-content: flex-start;">
-                    <span>🛡️</span> Verify Child Pickup Release
+                    <i class="bi bi-shield"></i> Verify Pickup
                 </a>
                 <a href="messages.php" class="btn btn-subtle" style="justify-content: flex-start;">
-                    <span>💬</span> Open Parent Chat
+                    <i class="bi bi-chat-dots"></i> Messages
                     <?php if ($unreadMsgs > 0): ?>
                         <span class="badge badge-danger" style="margin-left: auto;"><?= $unreadMsgs ?> New</span>
                     <?php endif; ?>
                 </a>
                 <a href="reminders.php" class="btn btn-subtle" style="justify-content: flex-start;">
-                    <span>🔔</span> Send Fee / Activity Reminder
+                    <i class="bi bi-bell"></i> Reminders
                 </a>
                 <a href="emergency.php" class="btn btn-danger" style="justify-content: flex-start;">
-                    <span>🚨</span> Send Emergency Broadcast
+                    <i class="bi bi-exclamation-triangle"></i> Emergency
                 </a>
             </div>
         </div>
@@ -214,15 +214,15 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Upcoming Activities Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">🎈 Upcoming Activities</h3>
-                <a href="events.php" class="btn btn-secondary btn-sm">Notify</a>
+                <h3 class="card-title"><i class="bi bi-calendar-event"></i> Upcoming Activities</h3>
+                <a href="events.php" class="btn btn-secondary btn-sm">Manage</a>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <?php foreach ($upcomingEvents as $evt): ?>
                     <div style="background: var(--bg-card-subtle); padding: 10px; border-radius: var(--radius-sm); border-left: 3px solid var(--primary); font-size: 0.88rem;">
                         <strong><?= htmlspecialchars($evt['title']) ?></strong>
                         <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-                            📅 <?= formatDate($evt['event_date']) ?> &bull; ⏰ <?= formatTime($evt['start_time']) ?>
+                            <i class="bi bi-calendar"></i> <?= formatDate($evt['event_date']) ?> • <i class="bi bi-clock"></i> <?= formatTime($evt['start_time']) ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

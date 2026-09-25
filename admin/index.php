@@ -63,7 +63,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <!-- Metric Summary Cards -->
 <div class="stat-grid">
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-primary">👶</div>
+        <i class="stat-icon-wrapper bi bi-people"></i>
         <div class="stat-content">
             <div class="stat-value"><?= number_format($totalStudents) ?></div>
             <div class="stat-label">Enrolled Students</div>
@@ -71,7 +71,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-mint">👩‍🏫</div>
+        <i class="stat-icon-wrapper bi bi-person-badge"></i>
         <div class="stat-content">
             <div class="stat-value"><?= number_format($totalTeachers) ?></div>
             <div class="stat-label">Active Teachers</div>
@@ -79,13 +79,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-accent">
-            <?= $pendingApprovals > 0 ? '⚠️' : '✅' ?>
-        </div>
+        <i class="stat-icon-wrapper bi <?= $pendingApprovals > 0 ? 'bi-exclamation-triangle' : 'bi-check-circle' ?>"></i>
         <div class="stat-content">
             <div class="stat-value"><?= number_format($pendingApprovals) ?></div>
             <div class="stat-label">
-                Pending Parent Approvals
+                Pending Approvals
                 <?php if ($pendingApprovals > 0): ?>
                     <a href="approvals.php" class="text-danger fw-bold" style="font-size:0.75rem; display:block;">Review Now &rarr;</a>
                 <?php endif; ?>
@@ -94,23 +92,23 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-sky">📊</div>
+        <i class="stat-icon-wrapper bi bi-percent"></i>
         <div class="stat-content">
             <div class="stat-value"><?= $attendanceRate ?>%</div>
-            <div class="stat-label">Today's Attendance Rate</div>
+            <div class="stat-label">Today's Attendance</div>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-mint">💵</div>
+        <i class="stat-icon-wrapper bi bi-currency-dollar"></i>
         <div class="stat-content">
             <div class="stat-value"><?= formatMoney($totalFeesPaid) ?></div>
-            <div class="stat-label">Total Fees Collected</div>
+            <div class="stat-label">Fees Collected</div>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon-wrapper stat-icon-rose">📈</div>
+        <i class="stat-icon-wrapper bi bi-exclamation-circle"></i>
         <div class="stat-content">
             <div class="stat-value" style="color: var(--rose);"><?= formatMoney($totalOutstanding) ?></div>
             <div class="stat-label">Outstanding Balances</div>
@@ -119,28 +117,28 @@ require_once dirname(__DIR__) . '/includes/header.php';
 </div>
 
 <!-- Quick Action Shortcuts -->
-<div class="card" style="background: linear-gradient(135deg, #FFFFFF, #F8FAFC);">
+<div class="card">
     <div class="card-header" style="margin-bottom: 12px; padding-bottom: 10px;">
-        <h3 class="card-title">⚡ Quick Administrative Actions</h3>
+        <h3 class="card-title"><i class="bi bi-lightning-charge"></i> Quick Actions</h3>
     </div>
     <div class="d-flex gap-3" style="flex-wrap: wrap;">
         <a href="students.php?action=new" class="btn btn-primary">
-            <span>+</span> Admit New Student
+            <i class="bi bi-plus-lg"></i> Admit Student
         </a>
-        <a href="fees.php?action=log" class="btn btn-mint">
-            <span>💳</span> Log Fee Payment
+        <a href="fees.php?action=log" class="btn btn-primary">
+            <i class="bi bi-credit-card"></i> Log Fee Payment
         </a>
-        <a href="events.php?action=new" class="btn btn-accent">
-            <span>🎈</span> Add School Event
+        <a href="events.php?action=new" class="btn btn-primary">
+            <i class="bi bi-calendar-event"></i> Add Event
         </a>
-        <a href="progress.php" class="btn btn-secondary">
-            <span>⭐</span> Review Academic Radar
+        <a href="progress.php" class="btn btn-primary">
+            <i class="bi bi-graph-up"></i> Academic Review
             <?php if ($needsSupportCount > 0): ?>
                 <span class="badge badge-warning" style="margin-left: 4px;"><?= $needsSupportCount ?> Needs Support</span>
             <?php endif; ?>
         </a>
-        <a href="reports.php" class="btn btn-secondary">
-            <span>📄</span> Generate Official Reports
+        <a href="reports.php" class="btn btn-primary">
+            <i class="bi bi-file-earmark-text"></i> Reports
         </a>
     </div>
 </div>
@@ -150,8 +148,8 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <!-- Left Column: Recent Student Enrollments -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">👶 Recent Student Enrollments</h3>
-            <a href="students.php" class="btn btn-secondary btn-sm">View All Students &rarr;</a>
+            <h3 class="card-title"><i class="bi bi-people"></i> Recent Enrollments</h3>
+            <a href="students.php" class="btn btn-secondary btn-sm">View All &rarr;</a>
         </div>
         <div class="table-responsive">
             <table class="table">
@@ -198,7 +196,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Upcoming Events Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"> Upcoming Activities</h3>
+                <h3 class="card-title"><i class="bi bi-calendar-event"></i> Upcoming Activities</h3>
                 <a href="events.php" class="btn btn-secondary btn-sm">Manage</a>
             </div>
             <?php if (empty($upcomingEvents)): ?>
@@ -224,7 +222,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <!-- Recent Activity Logs Card -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"> System Activity Trail</h3>
+                <h3 class="card-title"><i class="bi bi-clock-history"></i> Activity Log</h3>
                 <a href="logs.php" class="btn btn-secondary btn-sm">All Logs</a>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.84rem;">

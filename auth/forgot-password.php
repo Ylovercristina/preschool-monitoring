@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="auth-container">
     <div class="auth-card">
         <div style="text-align: center; margin-bottom: 24px;">
-            <div style="font-size: 2.6rem; margin-bottom: 6px;">🔑</div>
+            <div style="font-size: 2.6rem; margin-bottom: 7px;"></div>
             <h2>Password Recovery</h2>
             <p style="color: var(--text-muted); font-size: 0.88rem;">Recover your account access</p>
         </div>
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label class="form-label" for="email">Enter Registered Email Address</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="name@example.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required autofocus>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="rhysa@gmail.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required autofocus>
                     <small style="color: var(--text-muted); font-size: 0.78rem; display: block; margin-top: 4px;">Works for Admin, Teacher, or Parent accounts.</small>
                 </div>
 

@@ -61,7 +61,12 @@ require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <!-- Metric Summary Cards -->
-<div class="stat-grid">
+<section class="dashboard-stat-group">
+    <div class="dashboard-section-heading">
+        <span class="dashboard-section-kicker">School pulse</span>
+        <h2>Enrollment & Attendance</h2>
+    </div>
+    <div class="stat-grid">
     <div class="stat-card">
         <i class="stat-icon-wrapper bi bi-people"></i>
         <div class="stat-content">
@@ -99,25 +104,35 @@ require_once dirname(__DIR__) . '/includes/header.php';
         </div>
     </div>
 
-    <div class="stat-card">
-        <i class="stat-icon-wrapper bi bi-currency-dollar"></i>
-        <div class="stat-content">
-            <div class="stat-value"><?= formatMoney($totalFeesPaid) ?></div>
-            <div class="stat-label">Fees Collected</div>
-        </div>
     </div>
+</section>
 
-    <div class="stat-card">
-        <i class="stat-icon-wrapper bi bi-exclamation-circle"></i>
-        <div class="stat-content">
-            <div class="stat-value" style="color: var(--rose);"><?= formatMoney($totalOutstanding) ?></div>
-            <div class="stat-label">Outstanding Balances</div>
+<section class="dashboard-stat-group">
+    <div class="dashboard-section-heading">
+        <span class="dashboard-section-kicker">Financial snapshot</span>
+        <h2>Fees & Balances</h2>
+    </div>
+    <div class="stat-grid stat-grid-finance">
+        <div class="stat-card">
+            <i class="stat-icon-wrapper bi bi-currency-dollar"></i>
+            <div class="stat-content">
+                <div class="stat-value"><?= formatMoney($totalFeesPaid) ?></div>
+                <div class="stat-label">Fees Collected</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <i class="stat-icon-wrapper bi bi-exclamation-circle"></i>
+            <div class="stat-content">
+                <div class="stat-value" style="color: var(--rose);"><?= formatMoney($totalOutstanding) ?></div>
+                <div class="stat-label">Outstanding Balances</div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 <!-- Quick Action Shortcuts -->
-<div class="card">
+<div class="card dashboard-quick-actions">
     <div class="card-header" style="margin-bottom: 12px; padding-bottom: 10px;">
         <h3 class="card-title"><i class="bi bi-lightning-charge"></i> Quick Actions</h3>
     </div>
@@ -144,7 +159,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 </div>
 
 <!-- Main Two-Column Grid -->
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+<div class="dashboard-content-grid">
     <!-- Left Column: Recent Student Enrollments -->
     <div class="card">
         <div class="card-header">
@@ -192,7 +207,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 
     <!-- Right Column: Upcoming Events & System Activity Logs -->
-    <div>
+    <div class="dashboard-side-stack">
         <!-- Upcoming Events Card -->
         <div class="card">
             <div class="card-header">
